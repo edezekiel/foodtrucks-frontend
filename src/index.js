@@ -18,27 +18,39 @@ function addTruckToPage(truck){
   truckDiv.className = "truck"
   renderTruck(truck, truckDiv)
 
-  const truckBtn = document.createElement("button")
-    truckBtn.className = "speed"
-  truckBtn.innerHTML = "This truck is fast!"
-  truckBtn.addEventListener('click', speedVote)
+  const voteBtn = document.createElement("button")
+  voteBtn.className = "vote"
+  voteBtn.innerHTML = "This truck is fast!"
+  voteBtn.addEventListener('click', speedVote)
 
-  truckDiv.appendChild(truckBtn)
+  truckDiv.appendChild(voteBtn)
   container.appendChild(truckDiv)
 }
 
 function renderTruck(truck, truckDiv) {
   truckDiv.innerHTML +=
-  `<h2>${truck.name}</h2>
-  <p>Speed: ${truck.review_count}</p>
-  <p>${truck.location.display_address}</p>
+  `<h2 class="truck-name">${truck.name}</h2>
+  <p class="review-count">Votes: ${truck.review_count}</p>
+  <p class="truck-location">${truck.location.display_address}</p>
   `
     // <img src="${truck.image_url}" class="truck-image" />
 }
 
 function speedVote(event) {
-  console.log('hi there')
+  renderVote(event)
 }
+
+function renderVote(event) {
+  const votes = event.target.previousElementSibling.previousElementSibling.innerHTML
+  let plusVote = parseInt(votes.split(" ")[1]) + 1
+  event.target.previousElementSibling.previousElementSibling.innerHTML = `Votes ${plusVote}`
+  patchTruck(event, plusVote)
+}
+
+function patchTruck(event, plusVote) {
+  console.log(event, plusVote)
+}
+
 
 // id
 // alias
