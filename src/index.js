@@ -16,12 +16,14 @@ function addTruckToPage(truck){
   const container = document.querySelector(".truck-container")
   const truckDiv = document.createElement("div")
   truckDiv.className = "truck"
+
+  createTruckDataset(truck, truckDiv)
   renderTruck(truck, truckDiv)
 
   const voteBtn = document.createElement("button")
   voteBtn.className = "vote"
   voteBtn.innerHTML = "This truck is fast!"
-  voteBtn.addEventListener('click', speedVote)
+  voteBtn.addEventListener('click', renderVote)
 
   truckDiv.appendChild(voteBtn)
   container.appendChild(truckDiv)
@@ -29,15 +31,19 @@ function addTruckToPage(truck){
 
 function renderTruck(truck, truckDiv) {
   truckDiv.innerHTML +=
-  `<h2 class="truck-name">${truck.name}</h2>
-  <p class="review-count">Votes: ${truck.review_count}</p>
-  <p class="truck-location">${truck.location.display_address}</p>
+  `<h2>${truck.name}</h2>
+  <p>Votes: ${truck.review_count}</p>
+  <p>${truck.location.display_address}</p>
   `
     // <img src="${truck.image_url}" class="truck-image" />
 }
 
-function speedVote(event) {
-  renderVote(event)
+function createTruckDataset(truck, truckDiv){
+  truckDiv.dataset.id = truck.id
+  truckDiv.dataset.name = truck.name
+  truckDiv.dataset.image = truck.image_url
+  truckDiv.dataset.location = truck.location.display_address
+  truckDiv.dataset.reviews = truck.review_count
 }
 
 function renderVote(event) {
@@ -48,11 +54,18 @@ function renderVote(event) {
 }
 
 function patchTruck(event, plusVote) {
-  console.log(event, plusVote)
+  const truck = event.target.parentNode.dataset
+
+  const options = {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      "name": truck.name,
+      "image": truck.image,
+      "location": truck.location,
+      "review_count": plusVote
+    })
+  }
 }
-
-
-// id
-// alias
-// name
-// image_url
