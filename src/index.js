@@ -68,4 +68,6 @@ function patchTruck(event, plusVote) {
       "review_count": plusVote
     })
   }
+  // TODO: fix this url so it actually works
+  fetch(`${URL}/${truck.id}, options`)
 }
